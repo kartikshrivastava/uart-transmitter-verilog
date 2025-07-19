@@ -29,7 +29,7 @@ The transmitter is tested using a SystemVerilog testbench. The simulation includ
 
 ### 📸 Screenshot
 
-![UART Transmission Output](output/uart_tx_output_waveform.png)
+output/uart_tx_output_waveform.png
 
 ---
 
