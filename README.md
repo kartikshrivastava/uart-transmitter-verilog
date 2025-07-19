@@ -9,7 +9,7 @@ This project implements a Finite State Machine (FSM) based UART Transmitter usin
 
 - `uart_tx.sv` – Main UART transmitter module  
 - `testbench_uart_tx.sv` – Testbench to simulate the transmitter  
-- `uart_tx_output_waveform.png` – Simulation waveform output  
+- `uart_tx_simulation_result.png` – Simulation waveform output  
 
 ---
 
@@ -29,7 +29,7 @@ The transmitter is tested using a SystemVerilog testbench. The simulation includ
 
 ### 📸 Screenshot
 
-![UART TX Waveform](uart_tx_output_waveform.png)
+![UART TX Waveform](uart_tx_simulation_result.png)
 
 ---
 
