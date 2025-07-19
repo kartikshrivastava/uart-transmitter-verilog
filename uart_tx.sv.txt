@@ -1,0 +1,86 @@
+`timescale 1ns/1ps
+
+module uart_tx(
+    input wire clk,
+    input wire rst,
+    input wire tx_start,
+    input wire [7:0] tx_data,
+    output reg tx,
+    output reg tx_busy
+);
+    // Parameters
+    parameter CLK_FREQ = 50000000;   // 50 MHz
+    parameter BAUD_RATE = 9600;
+    localparam CLKS_PER_BIT = CLK_FREQ / BAUD_RATE; // = 5208
+
+    // State machine states
+    typedef enum logic [2:0] {
+        IDLE,
+        START,
+        DATA,
+        STOP
+    } state_t;
+
+    state_t state;
+    reg [12:0] clk_cnt;
+    reg [2:0] bit_idx;
+    reg [7:0] data_reg;
+
+    always @(posedge clk or posedge rst) begin
+        if (rst) begin
+            state    <= IDLE;
+            clk_cnt  <= 0;
+            bit_idx  <= 0;
+            data_reg <= 0;
+            tx       <= 1;
+            tx_busy  <= 0;
+        end else begin
+            case (state)
+                IDLE: begin
+                    tx       <= 1;
+                    clk_cnt  <= 0;
+                    bit_idx  <= 0;
+                    tx_busy  <= 0;
+                    if (tx_start) begin
+                        state    <= START;
+                        data_reg <= tx_data;
+                        tx_busy  <= 1;
+                    end
+                end
+                START: begin
+                    tx <= 0;
+                    if (clk_cnt < CLKS_PER_BIT - 1) begin
+                        clk_cnt <= clk_cnt + 1;
+                    end else begin
+                        clk_cnt <= 0;
+                        state   <= DATA;
+                    end
+                end
+                DATA: begin
+                    tx <= data_reg[bit_idx];
+                    if (clk_cnt < CLKS_PER_BIT - 1) begin
+                        clk_cnt <= clk_cnt + 1;
+                    end else begin
+                        clk_cnt <= 0;
+                        if (bit_idx < 7) begin
+                            bit_idx <= bit_idx + 1;
+                        end else begin
+                            bit_idx <= 0;
+                            state   <= STOP;
+                        end
+                    end
+                end
+                STOP: begin
+                    tx <= 1;
+                    if (clk_cnt < CLKS_PER_BIT - 1) begin
+                        clk_cnt <= clk_cnt + 1;
+                    end else begin
+                        clk_cnt <= 0;
+                        state   <= IDLE;
+                        tx_busy <= 0;
+                    end
+                end
+            endcase
+        end
+    end
+endmodule 

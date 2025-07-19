@@ -1,0 +1,56 @@
+`timescale 1ns/1ps
+
+module testbench;
+    reg clk;
+    reg rst;
+    reg tx_start;
+    reg [7:0] tx_data;
+    wire tx;
+    wire tx_busy;
+
+    // Clock generation: 50MHz → 20ns period
+    always #10 clk = ~clk;
+
+    // Instantiate UART TX
+    uart_tx uut (
+        .clk(clk),
+        .rst(rst),
+        .tx_start(tx_start),
+        .tx_data(tx_data),
+        .tx(tx),
+        .tx_busy(tx_busy)
+    );
+
+    initial begin
+        $dumpfile("dump.vcd");
+        $dumpvars(0, testbench);
+
+        // Initialize
+        clk = 0;
+        rst = 1;
+        tx_start = 0;
+        tx_data = 8'b0;
+
+        #100;
+        rst = 0;
+        #100;
+
+        // Send data
+        tx_data = 8'b10101010;   // Change data if needed
+        tx_start = 1;
+        #20;
+        tx_start = 0;
+
+        $display("Time (ns)\ttx\t tx_busy");
+        
+        // Print values every baud interval (~104160 ns)
+        repeat (12) begin
+            #104160;
+            $display("%-10t\t%-1b\t%-1b", $time, tx, tx_busy);
+        end
+
+        $display("Transmission Complete at time: %0t ns", $time);
+        $finish;
+    end
+endmodule
+
