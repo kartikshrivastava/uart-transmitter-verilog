@@ -1,26 +1,37 @@
-UART Transmitter using Verilog
-This project implements a UART Transmitter using Verilog HDL. The design uses a Finite State Machine (FSM) to transmit 8-bit serial data over a single line at a baud rate of 9600.
 
-📁 Files Included
-uart_tx.sv – Main UART Transmitter module
+## UART Transmitter using Verilog
 
-testbench_uart_tx.sv – Testbench to simulate transmission
+This project implements a Finite State Machine (FSM) based UART Transmitter using Verilog HDL. It simulates the transmission of serial data (8-bit) over a single line with proper start and stop bits at a baud rate of 9600.
 
-uart_tx_output_waveform.png – Simulation waveform output
+---
 
-🧪 Simulation
-The transmitter is tested using a SystemVerilog testbench. It simulates data transmission with proper start, data, and stop bits. The waveform shows the transmission behavior and tx_busy signal status.
+### 📁 Files Included
 
-💡 Tools Used
-Language: SystemVerilog
+- `uart_tx.sv` – Main UART transmitter module  
+- `testbench_uart_tx.sv` – Testbench to simulate the transmitter  
+- `uart_tx_output_waveform.png` – Simulation waveform output  
 
-Simulator: EDA Playground / ModelSim
+---
 
-Waveform Viewer: GTKWave
+### 🧪 Simulation
 
-📸 Screenshot
-uart_tx_output_waveform.png
+The transmitter is tested using a SystemVerilog testbench. The simulation includes sending a data byte, and visualizing start bit, 8-bit data, stop bit, and `tx_busy` signal. It ensures proper timing and bit serialization.
 
+---
 
-🔖 Tags
-#UART #Verilog #FSM #VLSI #DigitalDesign #MiniProject
+### 💡 Tools Used
+
+- Language: SystemVerilog  
+- Simulator: EDA Playground / ModelSim  
+- Waveform Viewer: GTKWave  
+
+---
+
+### 📸 Screenshot
+
+![UART Transmission Output](output/uart_tx_output_waveform.png)
+
+---
+
+### 🔖 Tags  
+#UART #Verilog #FSM #VLSI #DigitalDesign #MiniProject  
